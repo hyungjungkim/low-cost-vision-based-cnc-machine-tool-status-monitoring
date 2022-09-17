@@ -19,13 +19,13 @@ from datetime import date # For getting a date
 import random # For saving roi image for test purpose
 
 # options
-RUN_CONSOLE_ONLY_MODE = True
+RUN_CONSOLE_ONLY_MODE = False
 
 RUN_WITHOUT_WEBCAM_MODE = True
 RUN_UPSIDE_DOWN_MODE = False
 RUN_WITHOUT_SCREEN_MODE = False
 WEBCAM_INDEX = 0
-SAMPLE_IMAGE = 'test_data/hmi_screen_ex-1.jpg'
+SAMPLE_IMAGE = 'test_image/hmi_screen_ex-1.jpg'
 WEBCAM_FOCUS_AUTO = False
 SAVE_ROI_IMAGE = False
 

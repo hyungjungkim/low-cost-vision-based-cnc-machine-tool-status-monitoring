@@ -22,7 +22,7 @@ class OCREngine:
 if __name__ == '__main__':
     print('standalone test')
 
-    sample_image = cv2.imread('test_data/roi_image_sample-3.jpg')
+    sample_image = cv2.imread('test_image/roi_image_sample-2.jpg')
 
     ocr_engine = OCREngine()
 

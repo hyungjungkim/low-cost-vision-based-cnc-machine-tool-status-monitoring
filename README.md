@@ -1,6 +1,18 @@
 # Low-cost vision-based CNC machine tool status monitoring
 
-(To be updated.)  
+## Summary
+This repository presents an appropriate monitoring approach, KEM (Keep an Eye on your Machine), for Small and Medium-sized Enterprises (SMEs) in the manufacturing sector using a low-cost vision, such as a webcam, and open-source technologies, including OpenCV and Tesseract OCR. Mainly, this idea focuses on collecting and processing operational data using cheaper and easy-to-use components, like smart retrofitting.\
+
+Workflow of OCR process
+![Workflow of OCR process](figure-1.png 'Workflow of OCR process')
+
+Proposed monitoring idea
+![Proposed monitoring idea](figure-3.png 'Proposed monitoring idea')
+
+Example configuration of demo
+![Example configuration of demo](figure-8.png 'Example configuration of demo')
+
+The first demo is designed for the typical computer numerical control (CNC) machine tool.
 
 ## Dependencies
 - cv2, numpy, pillow, pytesseract: any version after 2019
