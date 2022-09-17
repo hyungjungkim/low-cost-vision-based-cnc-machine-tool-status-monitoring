@@ -1,4 +1,4 @@
-# Low-cost vision-based machine status monitoring tool 
+# Low-cost vision-based CNC machine tool status monitoring
 
 (To be updated.)  
 
