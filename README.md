@@ -20,7 +20,9 @@ The first demo is designed for the typical computer numerical control (CNC) mach
 - tesseract-ocr engine: Latest release of v4 ([UB-Mannheim's tesseract](https://github.com/UB-Mannheim/tesseract/wiki))
 
 ## How to use
-- [Proto_2018-x-corps (Korean)](docs/how_to_use_proto_2018-x-corps_kr.md), [Proto_2018-x-corps (English)](docs/how_to_use_proto_2018-x-corps_en.md)
+- Proto_2018-x-corps [(Korean)](docs/how_to_use_proto_2018-x-corps_kr.md), [(English)](docs/how_to_use_proto_2018-x-corps_en.md)
+- Webcam selector [(Korean)](), [(English)]()
+- Proto_2022
 
 ## Related publication
 - Kim, H., Jung, W. K., Choi, I. G., & Ahn, S. H. (2019). A low-cost vision-based monitoring of computer numerical control (CNC) machine tools for small and medium-sized enterprises (SMEs). Sensors, 19(20), 4506. [[Link](https://doi.org/10.3390/s19204506)]
