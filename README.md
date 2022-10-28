@@ -16,8 +16,8 @@ The first demo is designed for the typical computer numerical control (CNC) mach
 
 ## Dependencies
 - cv2, numpy, pillow, pytesseract: any version after 2019
-- tesserocr: v2.5.2 (tesseract 4.1.1)
-- tesseract-ocr engine: Latest release of v4 ([UB-Mannheim's tesseract](https://github.com/UB-Mannheim/tesseract/wiki))
+- tesserocr: v2.5.2 (tesseract 4.1.1) [[Download Link](https://github.com/simonflueckiger/tesserocr-windows_build/releases/tag/tesserocr-v2.5.2-tesseract-4.1.1)] (You should install an appropriate wheel for your installed python version.)
+- tesseract-ocr engine: Latest release of v4 [[Download Link](https://digi.bib.uni-mannheim.de/tesseract/tesseract-ocr-w64-setup-v4.1.0.20190314.exe)] ([UB-Mannheim's tesseract](https://github.com/UB-Mannheim/tesseract/wiki))
 
 ## How to use
 - Proto_2018-x-corps [(Korean)](docs/how_to_use_proto_2018-x-corps_kr.md), [(English)](docs/how_to_use_proto_2018-x-corps_en.md)
