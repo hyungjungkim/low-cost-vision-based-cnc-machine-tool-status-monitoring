@@ -1,5 +1,12 @@
-# How to use - Proto_2018-x-coprs
-0. 필요한 라이브러리 설치  
+# Proto_2018-x-coprs
+
+## 필수 라이브러리 Dependencies
+- cv2, numpy, pillow, pytesseract: any version after 2019
+- tesserocr: v2.5.2 (tesseract 4.1.1) [[Download Link](https://github.com/simonflueckiger/tesserocr-windows_build/releases/tag/tesserocr-v2.5.2-tesseract-4.1.1)] (You should install an appropriate wheel for your installed python version.)
+- tesseract-ocr engine: Latest release of v4 [[Download Link](https://digi.bib.uni-mannheim.de/tesseract/tesseract-ocr-w64-setup-v4.1.0.20190314.exe)] ([UB-Mannheim's tesseract](https://github.com/UB-Mannheim/tesseract/wiki))  
+
+## 설치 및 사용법 How to use
+0. 필수 라이브러리 설치  
 1. **custom_tessdata** 폴더의 **cnc-2018.traineddata** 파일을 Tesseract-OCR의 **tessdata** 폴더로 복사  
 2. **kem_cncmt_client_demo_app.py** 실행, Client App이 나타남  
 3. **Camera** 메뉴의 **Connect**를 실행, CNC HMI 샘플 이미지 화면이 나타남  
