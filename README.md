@@ -30,9 +30,8 @@ This demo is designed to monitor typical computer numerical control (CNC) machin
 
 ## 사용 방법 How to use
 - Proto_2018-x-corps [(한글)](docs/how_to_use_proto_2018-x-corps_kr.md), [(English)](docs/how_to_use_proto_2018-x-corps_en.md)
-- Webcam selector [(한글)](), [(English)]()
-- Proto_2022-cde-dx-award [(한글)](), [(English)]()
+- KEM-OCR-2023-alpha (under renewal) [(한글)](), [(English)]()
 
 ## 관련 논문 Related publication
-- Kim, H., Jung, W. K., Choi, I. G., & Ahn, S. H. (2019). A low-cost vision-based monitoring of computer numerical control (CNC) machine tools for small and medium-sized enterprises (SMEs). Sensors, 19(20), 4506. [[Link](https://doi.org/10.3390/s19204506)]
- - Kim. H. (2022). Open-source software for developing appropriate smart manufacturing technology for small and medium-sized enterprises (SMEs), Journal of Appropriate Technology - Accepted. [[Link]()], [[GitHub](https://github.com/hyungjungkim/enabling-oss-for-appropriate-smart-manufacturing-in-smes)]
+1. Kim, H., Jung, W. K., Choi, I. G., & Ahn, S. H. (2019). A low-cost vision-based monitoring of computer numerical control (CNC) machine tools for small and medium-sized enterprises (SMEs). Sensors, 19(20), 4506. [[Link](https://doi.org/10.3390/s19204506)]
+2. Kim. H. (2022). Open-source software for developing appropriate smart manufacturing technology for small and medium-sized enterprises (SMEs), Journal of Appropriate Technology - Accepted. [[Link]()], [[GitHub](https://github.com/hyungjungkim/enabling-oss-for-appropriate-smart-manufacturing-in-smes)]
