@@ -1,0 +1,17 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>./icon/help.png</file>
+    <file>icon/kem.png</file>
+    <file>./icon/info.png</file>
+    <file>./icon/options.png</file>
+    <file>./icon/update.png</file>
+    <file>./icon/Conn.png</file>
+    <file>./icon/Disconn.png</file>
+    <file>./icon/Exit.png</file>
+    <file>./icon/Stop.png</file>
+    <file>./icon/Watch.png</file>
+    <file>./icon/Save.png</file>
+    <file>./icon/Load.png</file>
+    <file>./icon/Live.png</file>
+  </qresource>
+</RCC>
