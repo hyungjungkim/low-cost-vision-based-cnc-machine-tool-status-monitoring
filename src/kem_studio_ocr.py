@@ -115,35 +115,40 @@ class OptionDialog(QMainWindow):
 
 class AOIEditor(QDialog):
     name = ''
-    selected_index = 0
+    #selected_index = 0
     x, y, width, height = -1, -1, -1, -1
     threshold = 0  # cv2 threshold manipulation
-    type = 0  # int 0, float 1, string 2
+    type = 0 # 0 : None, 1 : Int, 2 : Float, 3: Text
 
     def __init__(self, parent=None):
         super().__init__()
         self.ui = uic.loadUi(AOI_EDITOR_UI_PATH, self)
         self.ui.show()
+        self.txtName.textChanged.connect(self.on_name_change)
+        #self.cbbParam.currentIndexChanged.connect(self.on_param_select)
 
-        self.cbbParam.currentIndexChanged.connect(self.on_param_select)
+    #def on_param_select(self):
+        #self.selected_index = self.cbbParam.currentIndex()
 
-    def on_param_select(self):
-        self.selected_index = self.cbbParam.currentIndex()
-
-        if self.selected_index == 2 or self.selected_index == 12:
-            self.txtType.setText('1')  # String
-        else:
-            self.txtType.setText('0')  # Numeric
+        #if self.selected_index == 2 or self.selected_index == 12:
+            #self.txtType.setText('1')  # String
+        #else:
+            #self.txtType.setText('0')  # Numeric
+    def on_name_change(self):
+        if self.txtName.text() != '':
+            self.buttonBox.setEnabled(True)
+        else :
+            self.buttonBox.setEnabled(False)
 
     def accept(self):
         # update data
-        self.name = self.cbbParam.currentText()
+        self.name = self.txtName.text()
         self.x = int(self.txtLocX.text())
         self.y = int(self.txtLocY.text())
         self.width = int(self.txtSizeW.text())
         self.height = int(self.txtSizeH.text())
         self.threshold = int(self.txtThreshold.text())
-        self.type = int(self.txtType.text())
+        self.type = int(self.cbbType.currentIndex())
         self.done(1)
 
     def reject(self):
@@ -155,7 +160,7 @@ class AOI:
     x, y, width, height = -1, -1, -1, -1
     threshold = 128  # cv2 threshold manipulation
     type = 0  # numeric 0, text 1, mixed 2
-    data_id = ''
+    #data_id = ''
     aoi_image = None
     ocr_res = ''
 
@@ -174,13 +179,12 @@ class AOI:
     def set_type(self, type):
         self.type = type
 
-    def set_id(self, index):
-        if index < 10:
-            index = 'data_00' + str(index)
-        else:
-            index = 'data_0' + str(index)
-
-        self.data_id = index
+    #def set_id(self, index):
+        #if index < 10:
+        #    index = 'data_00' + str(index)
+        #else:
+        #    index = 'data_0' + str(index)
+        #self.data_id = index
 
     def set_aoi_image(self, aoi_image):
         self.aoi_image = aoi_image
@@ -189,13 +193,17 @@ class AOI:
         self.ocr_res = ocr_res
     
     def __getstate__(self):
+        #return (self.name, self.x, self.y, self.width, self.height, self.threshold,
+        #self.type, self.data_id, self.aoi_image, self.ocr_res)
         return (self.name, self.x, self.y, self.width, self.height, self.threshold,
-        self.type, self.data_id, self.aoi_image, self.ocr_res)
+        self.type, self.aoi_image, self.ocr_res)
 
     def __setstate__(self, state):
-        name, x, y, width, height, threshold, type, data_id, aoi_image, ocr_res = state
+        #name, x, y, width, height, threshold, type, data_id, aoi_image, ocr_res = state
+        name, x, y, width, height, threshold, type, aoi_image, ocr_res = state      
         self.name, self.x, self.y, self.width, self.height, self.threshold = name, x, y, width, height, threshold
-        self.type, self.data_id, self.aoi_image, self.ocr_res = type, data_id, aoi_image, ocr_res
+        #self.type, self.data_id, self.aoi_image, self.ocr_res = type, data_id, aoi_image, ocr_res
+        self.type, self.aoi_image, self.ocr_res = type, aoi_image, ocr_res
 
 
 class KEM_STUDIO_OCR(QMainWindow):
@@ -298,7 +306,7 @@ class KEM_STUDIO_OCR(QMainWindow):
         self.dialog.txtSizeW.setText(str(self.width))
         self.dialog.txtSizeH.setText(str(self.height))
         self.dialog.txtThreshold.setText(str(self.thresholdvalue))
-        self.dialog.txtType.setText('0')
+        #self.dialog.txtType.setText('0')
 
         self.dialog.show()
         if self.dialog.exec_():
@@ -308,7 +316,7 @@ class KEM_STUDIO_OCR(QMainWindow):
             aoi.set_size(self.dialog.width, self.dialog.height)
             aoi.set_threshold(self.dialog.threshold)
             aoi.set_type(self.dialog.type)
-            aoi.set_id(self.dialog.selected_index)
+            #aoi.set_id(self.dialog.selected_index)
             self.aoi_list.append(aoi)
             self.status_bar.showMessage('AOI of %s is added. %s' % (self.dialog.name, time.ctime()))
         self.update_aoi()
