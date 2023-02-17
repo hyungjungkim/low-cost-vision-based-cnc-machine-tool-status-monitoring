@@ -6,7 +6,7 @@ This repository contains an appropriate status monitoring tool, KEM (Keep an Eye
 ### Conceptual diagram of status monitoring  
 ![Proposed monitoring idea](concept-diagram-kem.png 'Proposed monitoring idea')  
 
-### For mode information, pleae visit [here](https://www.notion.so/hyungjungkim/Vision-based-Status-Monitoring-for-Legacy-HMI-b3c092ed1e6144a7b158db1f119551ce)!  
+### For mode information, pleae visit [here](https://hyungjungkim.notion.site/hyungjungkim/Vision-based-Status-Monitoring-for-Legacy-HMI-b3c092ed1e6144a7b158db1f119551ce)!  
 
 <br>
 
@@ -18,4 +18,4 @@ This repository contains an appropriate status monitoring tool, KEM (Keep an Eye
 ### 상태 모니터링 개념도  
 ![Proposed monitoring idea](concept-diagram-kem.png 'Proposed monitoring idea')  
 
-### 보다 상세한 정보는 [여기](https://www.notion.so/hyungjungkim/HMI-7b6145baf5ea4a6ab0a8daf56aadb39d)로 방문해주세요! 
+### 보다 상세한 정보는 [여기](https://hyungjungkim.notion.site/HMI-7b6145baf5ea4a6ab0a8daf56aadb39d)로 방문해주세요! 
