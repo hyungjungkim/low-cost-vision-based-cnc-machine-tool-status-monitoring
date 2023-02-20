@@ -15,6 +15,7 @@ from kem_webcam_selector import WebcamSelector
 import kem_studio_rc
 KEM_CLIENT_UI_PATH = 'kem_studio_ocr.ui'
 AOI_EDITOR_UI_PATH = 'aoi_editor.ui'
+AOI_ADD_UI_PATH = 'kem_studio_add_aoi.ui'
 ABOUT_DIALOG_PATH = 'kem_studio_ocr_about.ui'
 OPTION_DIALOG_PATH = 'kem_studio_ocr_option.ui'
 
@@ -112,6 +113,40 @@ class OptionDialog(QMainWindow):
     def search_camera_index(self):
         webcam_selector = WebcamSelector()
 
+class AOIAdd(QDialog):
+    name = ''
+    x, y, width, height = -1, -1, -1, -1
+    threshold = 0 # cv2 threshold manipulation
+    type = 0 # 0 : None, 1 : Int, 2 : Float, 3: Text
+    def __init__(self,parent=None):
+        super().__init__()
+        self.ui = uic.loadUi(AOI_ADD_UI_PATH, self)
+        self.ui.show()
+        self.txtName.textChanged.connect(self.on_name_change)
+        self.sldThreshold.valueChanged.connect(self.on_threshold_change)
+        
+    def on_name_change(self):
+        if self.txtName.text() != '':
+            self.buttonBox.setEnabled(True)
+        else :
+            self.buttonBox.setEnabled(False)
+    
+    def on_threshold_change(self):
+        self.lblThreshold.setText(str(self.sldThreshold.value()))
+
+    def accept(self):
+        # update data
+        self.name = self.txtName.text()
+        self.x = int(self.txtLocX.text())
+        self.y = int(self.txtLocY.text())
+        self.width = int(self.txtSizeW.text())
+        self.height = int(self.txtSizeH.text())
+        self.threshold = int(self.sldThreshold.value())
+        self.type = int(self.cbbType.currentIndex())
+        self.done(1)
+
+    def reject(self):
+        self.done(0)
 
 class AOIEditor(QDialog):
     name = ''
