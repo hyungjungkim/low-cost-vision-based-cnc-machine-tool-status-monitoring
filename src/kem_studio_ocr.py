@@ -9,12 +9,13 @@ CYCLE_PERIOD = 1.0
 # For GUI
 import sys
 from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QTableWidgetItem
-from PyQt5 import uic
+from PyQt5 import uic,QtGui
 import webbrowser
 from kem_webcam_selector import WebcamSelector
 import kem_studio_rc
 KEM_CLIENT_UI_PATH = 'kem_studio_ocr.ui'
 AOI_EDITOR_UI_PATH = 'aoi_editor.ui'
+AOI_ADD_UI_PATH = 'kem_studio_add_aoi.ui'
 ABOUT_DIALOG_PATH = 'kem_studio_ocr_about.ui'
 OPTION_DIALOG_PATH = 'kem_studio_ocr_option.ui'
 
@@ -112,10 +113,149 @@ class OptionDialog(QMainWindow):
     def search_camera_index(self):
         webcam_selector = WebcamSelector()
 
+class AOIAdd(QDialog):
+    name = ''
+    col, row, x, y, width, height = -1, -1, -1, -1, -1, -1
+    threshold = 0 # cv2 threshold manipulation
+    type = 0 # 0 : None, 1 : Int, 2 : Float, 3: Text
+    image,image_,disp_img = None, None, None
+    camera_focus = 30
+    rectangle = False
+    thresholdvalue = 0
+    margin_width, margin_height = 100, 30
+    finished = False
+    sample_image = cv2.imread(SAMPLE_IMAGE)
+    ocr_engine = ocr_engine.OCREngine(opt_TESSERACT_EXE)
 
+    def __init__(self,parent= None):
+        super().__init__()
+        self.ui = uic.loadUi(AOI_ADD_UI_PATH, self)
+        self.ui.show()
+        self.btnAOI.clicked.connect(self.addAOI)
+        self.btnOCRTest.clicked.connect(self.testOCR)
+        self.btnRetry.clicked.connect(self.retry)
+        self.txtName.textChanged.connect(self.on_name_change)
+        self.sldThreshold.valueChanged.connect(self.on_threshold_change)
+    
+    def retry(self):
+        self.addAOI()
+
+    def showCaptureResult(self,img):
+        h,w = img.shape
+        qImg = QtGui.QImage(img.data, w, h, w, QtGui.QImage.Format_Grayscale8)
+        pixmap = QtGui.QPixmap.fromImage(qImg)
+        self.lblImage.setPixmap(pixmap)
+        self.lblImage.show()
+
+    def onMouse(self, event, x, y, flags, param):
+        if event == cv2.EVENT_LBUTTONDOWN:
+            self.rectangle = True
+            self.col, self.row = x, y
+        elif event == cv2.EVENT_MOUSEMOVE:
+            if self.rectangle:
+                self.image = self.image_.copy()
+                cv2.rectangle(self.image, (self.col, self.row), (x, y), (0, 255, 0), 2)
+                cv2.imshow('image', self.image)
+        elif event == cv2.EVENT_LBUTTONUP:
+            self.capture = False
+            self.rectangle = False
+            cv2.rectangle(self.image, (self.col, self.row), (x, y), (0, 255, 0), 2)
+            self.height, self.width = abs(self.row - y), abs(self.col - x)
+
+            print('col %s, row %s, width %s, height %s' % (self.col, self.row, self.width, self.height))
+            aoi_image = self.image[self.row:self.row + self.height, self.col:self.col + self.width]
+            aoi_base = np.zeros((self.height + 2 * self.margin_height, self.width + 2 * self.margin_width, 3), np.uint8) + 255
+            aoi_base[self.margin_height:self.height + self.margin_height, self.margin_width:self.margin_width + self.width] = aoi_image 
+            aoi_grayscale = cv2.cvtColor(aoi_base, cv2.COLOR_BGR2GRAY)
+            self.disp_img = aoi_grayscale
+            self.showCaptureResult(self.disp_img)
+
+            self.x = self.col
+            self.y = self.row
+            self.txtLocX.setText(str(self.x))
+            self.txtLocY.setText(str(self.y))
+            self.txtSizeW.setText(str(self.width))
+            self.txtSizeH.setText(str(self.height))
+            cv2.destroyWindow('image')
+
+    
+    def addAOI(self):
+        self.btnAOI.hide()
+        sample_image = cv2.imread(SAMPLE_IMAGE)
+        vidCap = cv2.VideoCapture(opt_WEBCAM_INDEX,cv2.CAP_V4L)
+        message = 'Start capturing an image.'
+        print(message)
+
+        if not opt_WEBCAM_AUTOFOCUS:
+            vidCap.set(cv2.CAP_PROP_AUTOFOCUS, 0)
+            vidCap.set(cv2.CAP_PROP_FOCUS, self.camera_focus)
+
+        vidCap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+        vidCap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+
+        cv2.namedWindow('image')
+        cv2.setMouseCallback('image', self.onMouse)
+        vidCap.set(cv2.CAP_PROP_FOCUS, self.camera_focus)
+        success, self.image = vidCap.read()
+
+        if opt_RUN_WITHOUT_WEBCAM_MODE:
+            self.image = self.sample_image
+
+        if not success and not opt_RUN_WITHOUT_WEBCAM_MODE:
+            print('Fail to read an image.')
+            return
+        
+        self.image_ = self.image.copy()
+        while(1) : 
+            cv2.imshow('image', self.image)
+            cv2.waitKey(50)
+            if cv2.getWindowProperty('image',cv2.WND_PROP_VISIBLE) < 1:        
+                break
+        
+        cv2.destroyAllWindows()
+        vidCap.release()
+        message = 'Capturing an image is finished.'
+        print(message)
+        
+    
+    def on_name_change(self):
+        if self.txtName.text() != '':
+            self.buttonBox.setEnabled(True)
+        else :
+            self.buttonBox.setEnabled(False)
+    
+    def on_threshold_change(self):
+        self.thresholdvalue = self.sldThreshold.value()
+        self.txtThreshold.setText(str(self.sldThreshold.value()))
+        ret, thr1 = cv2.threshold(self.disp_img, self.thresholdvalue, 255, cv2.THRESH_BINARY)
+        self.showCaptureResult(thr1)
+
+    def testOCR(self):
+        print('Start testing. %s' % (time.ctime()))
+        success, aoi_image = cv2.threshold(self.disp_img, self.thresholdvalue, 255, cv2.THRESH_BINARY)
+        global opt_TESSERACTOCR_DIR
+        ocr_res = self.ocr_engine.execute_ocr(aoi_image, opt_TESSERACTOCR_DIR)
+        self.txtOCRTestResult.setText(ocr_res)
+        print('End testing. %s' % (time.ctime()))
+
+
+    def accept(self):
+        # update data
+        self.name = self.txtName.text()
+        self.x = int(self.txtLocX.text())
+        self.y = int(self.txtLocY.text())
+        self.width = int(self.txtSizeW.text())
+        self.height = int(self.txtSizeH.text())
+        self.threshold = int(self.sldThreshold.value())
+        self.type = int(self.cbbType.currentIndex())
+        self.finished = True
+        self.done(1)
+
+    def reject(self):
+        self.done(0)
+'''
 class AOIEditor(QDialog):
     name = ''
-    #selected_index = 0
     x, y, width, height = -1, -1, -1, -1
     threshold = 0  # cv2 threshold manipulation
     type = 0 # 0 : None, 1 : Int, 2 : Float, 3: Text
@@ -125,15 +265,7 @@ class AOIEditor(QDialog):
         self.ui = uic.loadUi(AOI_EDITOR_UI_PATH, self)
         self.ui.show()
         self.txtName.textChanged.connect(self.on_name_change)
-        #self.cbbParam.currentIndexChanged.connect(self.on_param_select)
 
-    #def on_param_select(self):
-        #self.selected_index = self.cbbParam.currentIndex()
-
-        #if self.selected_index == 2 or self.selected_index == 12:
-            #self.txtType.setText('1')  # String
-        #else:
-            #self.txtType.setText('0')  # Numeric
     def on_name_change(self):
         if self.txtName.text() != '':
             self.buttonBox.setEnabled(True)
@@ -153,14 +285,13 @@ class AOIEditor(QDialog):
 
     def reject(self):
         self.done(0)
-
+'''
 
 class AOI:
     name = 'param_id'
     x, y, width, height = -1, -1, -1, -1
     threshold = 128  # cv2 threshold manipulation
     type = 0  # numeric 0, text 1, mixed 2
-    #data_id = ''
     aoi_image = None
     ocr_res = ''
 
@@ -179,13 +310,6 @@ class AOI:
     def set_type(self, type):
         self.type = type
 
-    #def set_id(self, index):
-        #if index < 10:
-        #    index = 'data_00' + str(index)
-        #else:
-        #    index = 'data_0' + str(index)
-        #self.data_id = index
-
     def set_aoi_image(self, aoi_image):
         self.aoi_image = aoi_image
 
@@ -193,16 +317,12 @@ class AOI:
         self.ocr_res = ocr_res
     
     def __getstate__(self):
-        #return (self.name, self.x, self.y, self.width, self.height, self.threshold,
-        #self.type, self.data_id, self.aoi_image, self.ocr_res)
         return (self.name, self.x, self.y, self.width, self.height, self.threshold,
         self.type, self.aoi_image, self.ocr_res)
 
     def __setstate__(self, state):
-        #name, x, y, width, height, threshold, type, data_id, aoi_image, ocr_res = state
         name, x, y, width, height, threshold, type, aoi_image, ocr_res = state      
         self.name, self.x, self.y, self.width, self.height, self.threshold = name, x, y, width, height, threshold
-        #self.type, self.data_id, self.aoi_image, self.ocr_res = type, data_id, aoi_image, ocr_res
         self.type, self.aoi_image, self.ocr_res = type, aoi_image, ocr_res
 
 
@@ -288,6 +408,10 @@ class KEM_STUDIO_OCR(QMainWindow):
         self.update_status(message)
         self.update_aoi()
         print(message)
+        self.tbactionOptions.setEnabled(True)
+        self.actionOptions.setEnabled(True)
+        self.tbactionWatch.setEnabled(True)
+        self.actionWatch.setEnabled(True)
 
     def save_aoi_data(self):
         with open('aoi_data.kem', 'wb') as output:  # Overwrites an existing file.
@@ -298,6 +422,7 @@ class KEM_STUDIO_OCR(QMainWindow):
         self.update_aoi()
         print(message)
 
+    '''
     def add_region(self):
         self.dialog = AOIEditor(self)
 
@@ -319,6 +444,16 @@ class KEM_STUDIO_OCR(QMainWindow):
             #aoi.set_id(self.dialog.selected_index)
             self.aoi_list.append(aoi)
             self.status_bar.showMessage('AOI of %s is added. %s' % (self.dialog.name, time.ctime()))
+    '''
+    def add_region(self, addAOI):
+        aoi = AOI()
+        aoi.set_name(addAOI.name)
+        aoi.set_location(addAOI.x, addAOI.y)
+        aoi.set_size(addAOI.width, addAOI.height)
+        aoi.set_threshold(addAOI.threshold)
+        aoi.set_type(addAOI.type)
+        self.aoi_list.append(aoi)
+        self.status_bar.showMessage('AOI of %s is added. %s' % (addAOI.name, time.ctime()))
         self.update_aoi()
 
     def update_aoi(self):
@@ -380,7 +515,7 @@ class KEM_STUDIO_OCR(QMainWindow):
             success, image = cap_camera.read()
             if opt_RUN_WITHOUT_WEBCAM_MODE:
                 image = self.sample_image
-
+            
             # if opt_UPSIDE_DOWN_MODE:
             #     rows, cols = image.shape[:2]
             #     temp_image = cv2.getRotationMatrix2D((cols / 2, rows / 2), 180, 1)
@@ -462,6 +597,7 @@ class KEM_STUDIO_OCR(QMainWindow):
     def onChange(self, x):
         pass
 
+    '''
     def onMouse(self, event, x, y, flags, param):
         if self.capture:
             if event == cv2.EVENT_LBUTTONDOWN:
@@ -485,6 +621,8 @@ class KEM_STUDIO_OCR(QMainWindow):
                                     np.uint8) + 255
                 aoi_base[self.margin_height:self.height + self.margin_height,
                 self.margin_width:self.margin_width + self.width] = aoi_image
+                self.thresholdvalue = 68
+                self.add_region()
 
                 cv2.namedWindow('threshold')
                 cv2.imshow('threshold', aoi_base)
@@ -513,6 +651,7 @@ class KEM_STUDIO_OCR(QMainWindow):
                 cv2.destroyWindow('threshold')
 
         return
+    '''
 
     def set_camera_focus(self, value):
         self.camera_focus += value
@@ -525,6 +664,15 @@ class KEM_STUDIO_OCR(QMainWindow):
         print('Webcam focus = %i' % self.camera_focus)
 
     def connect_camera(self):
+        dialog = AOIAdd(self)
+        dialog.exec_()
+        if(dialog.finished) : 
+            self.add_region(dialog)
+        self.tbactionOptions.setEnabled(True)
+        self.actionOptions.setEnabled(True)
+        self.tbactionWatch.setEnabled(True)
+        self.actionWatch.setEnabled(True)
+        '''
         vidCap = cv2.VideoCapture(opt_WEBCAM_INDEX,cv2.CAP_V4L)
         message = 'Start capturing an image.'
         self.update_status(message)
@@ -597,6 +745,7 @@ class KEM_STUDIO_OCR(QMainWindow):
         message = 'Capturing an image is finished.'
         self.update_status(message)
         print(message)
+        '''
     
     def visit_website(self):
         webbrowser.open(WEBSITE_URL)
