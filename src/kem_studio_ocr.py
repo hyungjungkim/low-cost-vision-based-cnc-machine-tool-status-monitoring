@@ -9,7 +9,7 @@ CYCLE_PERIOD = 1.0
 # For GUI
 import sys
 from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QTableWidgetItem
-from PyQt5 import uic
+from PyQt5 import uic,QtGui
 import webbrowser
 from kem_webcam_selector import WebcamSelector
 import kem_studio_rc
@@ -118,21 +118,35 @@ class AOIAdd(QDialog):
     col, row, x, y, width, height = -1, -1, -1, -1, -1, -1
     threshold = 0 # cv2 threshold manipulation
     type = 0 # 0 : None, 1 : Int, 2 : Float, 3: Text
-    image,image_ = None,None
+    image,image_,disp_img = None, None, None
     camera_focus = 30
     rectangle = False
     thresholdvalue = 0
     margin_width, margin_height = 100, 30
+    finished = False
     sample_image = cv2.imread(SAMPLE_IMAGE)
-    
-    def __init__(self,parent=None):
+    ocr_engine = ocr_engine.OCREngine(opt_TESSERACT_EXE)
+
+    def __init__(self,parent= None):
         super().__init__()
         self.ui = uic.loadUi(AOI_ADD_UI_PATH, self)
         self.ui.show()
         self.btnAOI.clicked.connect(self.addAOI)
+        self.btnOCRTest.clicked.connect(self.testOCR)
+        self.btnRetry.clicked.connect(self.retry)
         self.txtName.textChanged.connect(self.on_name_change)
         self.sldThreshold.valueChanged.connect(self.on_threshold_change)
     
+    def retry(self):
+        self.addAOI()
+
+    def showCaptureResult(self,img):
+        h,w = img.shape
+        qImg = QtGui.QImage(img.data, w, h, w, QtGui.QImage.Format_Grayscale8)
+        pixmap = QtGui.QPixmap.fromImage(qImg)
+        self.lblImage.setPixmap(pixmap)
+        self.lblImage.show()
+
     def onMouse(self, event, x, y, flags, param):
         if event == cv2.EVENT_LBUTTONDOWN:
             self.rectangle = True
@@ -149,10 +163,13 @@ class AOIAdd(QDialog):
             self.height, self.width = abs(self.row - y), abs(self.col - x)
 
             print('col %s, row %s, width %s, height %s' % (self.col, self.row, self.width, self.height))
-
             aoi_image = self.image[self.row:self.row + self.height, self.col:self.col + self.width]
             aoi_base = np.zeros((self.height + 2 * self.margin_height, self.width + 2 * self.margin_width, 3), np.uint8) + 255
-            aoi_base[self.margin_height:self.height + self.margin_height, self.margin_width:self.margin_width + self.width] = aoi_image
+            aoi_base[self.margin_height:self.height + self.margin_height, self.margin_width:self.margin_width + self.width] = aoi_image 
+            aoi_grayscale = cv2.cvtColor(aoi_base, cv2.COLOR_BGR2GRAY)
+            self.disp_img = aoi_grayscale
+            self.showCaptureResult(self.disp_img)
+
             self.x = self.col
             self.y = self.row
             self.txtLocX.setText(str(self.x))
@@ -199,6 +216,7 @@ class AOIAdd(QDialog):
         vidCap.release()
         message = 'Capturing an image is finished.'
         print(message)
+        
     
     def on_name_change(self):
         if self.txtName.text() != '':
@@ -207,7 +225,19 @@ class AOIAdd(QDialog):
             self.buttonBox.setEnabled(False)
     
     def on_threshold_change(self):
+        self.thresholdvalue = self.sldThreshold.value()
         self.txtThreshold.setText(str(self.sldThreshold.value()))
+        ret, thr1 = cv2.threshold(self.disp_img, self.thresholdvalue, 255, cv2.THRESH_BINARY)
+        self.showCaptureResult(thr1)
+
+    def testOCR(self):
+        print('Start testing. %s' % (time.ctime()))
+        success, aoi_image = cv2.threshold(self.disp_img, self.thresholdvalue, 255, cv2.THRESH_BINARY)
+        global opt_TESSERACTOCR_DIR
+        ocr_res = self.ocr_engine.execute_ocr(aoi_image, opt_TESSERACTOCR_DIR)
+        self.txtOCRTestResult.setText(ocr_res)
+        print('End testing. %s' % (time.ctime()))
+
 
     def accept(self):
         # update data
@@ -218,6 +248,7 @@ class AOIAdd(QDialog):
         self.height = int(self.txtSizeH.text())
         self.threshold = int(self.sldThreshold.value())
         self.type = int(self.cbbType.currentIndex())
+        self.finished = True
         self.done(1)
 
     def reject(self):
@@ -377,6 +408,10 @@ class KEM_STUDIO_OCR(QMainWindow):
         self.update_status(message)
         self.update_aoi()
         print(message)
+        self.tbactionOptions.setEnabled(True)
+        self.actionOptions.setEnabled(True)
+        self.tbactionWatch.setEnabled(True)
+        self.actionWatch.setEnabled(True)
 
     def save_aoi_data(self):
         with open('aoi_data.kem', 'wb') as output:  # Overwrites an existing file.
@@ -387,6 +422,29 @@ class KEM_STUDIO_OCR(QMainWindow):
         self.update_aoi()
         print(message)
 
+    '''
+    def add_region(self):
+        self.dialog = AOIEditor(self)
+
+        self.dialog.txtLocX.setText(str(self.col))
+        self.dialog.txtLocY.setText(str(self.row))
+        self.dialog.txtSizeW.setText(str(self.width))
+        self.dialog.txtSizeH.setText(str(self.height))
+        self.dialog.txtThreshold.setText(str(self.thresholdvalue))
+        #self.dialog.txtType.setText('0')
+
+        self.dialog.show()
+        if self.dialog.exec_():
+            aoi = AOI()
+            aoi.set_name(self.dialog.name)
+            aoi.set_location(self.dialog.x, self.dialog.y)
+            aoi.set_size(self.dialog.width, self.dialog.height)
+            aoi.set_threshold(self.dialog.threshold)
+            aoi.set_type(self.dialog.type)
+            #aoi.set_id(self.dialog.selected_index)
+            self.aoi_list.append(aoi)
+            self.status_bar.showMessage('AOI of %s is added. %s' % (self.dialog.name, time.ctime()))
+    '''
     def add_region(self, addAOI):
         aoi = AOI()
         aoi.set_name(addAOI.name)
@@ -457,6 +515,11 @@ class KEM_STUDIO_OCR(QMainWindow):
             success, image = cap_camera.read()
             if opt_RUN_WITHOUT_WEBCAM_MODE:
                 image = self.sample_image
+            
+            # if opt_UPSIDE_DOWN_MODE:
+            #     rows, cols = image.shape[:2]
+            #     temp_image = cv2.getRotationMatrix2D((cols / 2, rows / 2), 180, 1)
+            #     image = cv2.warpAffine(image, temp_image, (cols, rows))
 
             today = str(date.today())
             now = str(time.strftime("%H:%M:%S"))
@@ -534,6 +597,7 @@ class KEM_STUDIO_OCR(QMainWindow):
     def onChange(self, x):
         pass
 
+    '''
     def onMouse(self, event, x, y, flags, param):
         if self.capture:
             if event == cv2.EVENT_LBUTTONDOWN:
@@ -560,7 +624,7 @@ class KEM_STUDIO_OCR(QMainWindow):
                 self.thresholdvalue = 68
                 self.add_region()
 
-                '''cv2.namedWindow('threshold')
+                cv2.namedWindow('threshold')
                 cv2.imshow('threshold', aoi_base)
                 cv2.createTrackbar('thresholdbar', 'threshold', 0, 255, self.onChange)
 
@@ -584,9 +648,10 @@ class KEM_STUDIO_OCR(QMainWindow):
                     ret, thr1 = cv2.threshold(aoi_grayscale, thresholdvalue, 255, cv2.THRESH_BINARY)
                     cv2.imshow('threshold', thr1)
 
-                cv2.destroyWindow('threshold')'''
+                cv2.destroyWindow('threshold')
 
         return
+    '''
 
     def set_camera_focus(self, value):
         self.camera_focus += value
@@ -601,8 +666,8 @@ class KEM_STUDIO_OCR(QMainWindow):
     def connect_camera(self):
         dialog = AOIAdd(self)
         dialog.exec_()
-
-        self.add_region(dialog)
+        if(dialog.finished) : 
+            self.add_region(dialog)
         self.tbactionOptions.setEnabled(True)
         self.actionOptions.setEnabled(True)
         self.tbactionWatch.setEnabled(True)

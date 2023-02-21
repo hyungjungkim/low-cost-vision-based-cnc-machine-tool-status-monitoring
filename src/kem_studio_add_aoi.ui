@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>695</width>
-    <height>751</height>
+    <width>708</width>
+    <height>804</height>
    </rect>
   </property>
   <property name="font">
@@ -27,8 +27,8 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>480</x>
-     <y>700</y>
+     <x>490</x>
+     <y>750</y>
      <width>191</width>
      <height>32</height>
     </rect>
@@ -50,7 +50,7 @@
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>310</y>
+     <y>370</y>
      <width>641</width>
      <height>361</height>
     </rect>
@@ -231,6 +231,9 @@
       <property name="maximum">
        <number>255</number>
       </property>
+      <property name="value">
+       <number>128</number>
+      </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
@@ -331,7 +334,7 @@
        </font>
       </property>
       <property name="text">
-       <string>0</string>
+       <string>128</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -367,7 +370,7 @@
       </item>
       <item>
        <property name="text">
-        <string>새 항목</string>
+        <string>3 : Text</string>
        </property>
       </item>
      </widget>
@@ -407,7 +410,7 @@
      <x>30</x>
      <y>40</y>
      <width>641</width>
-     <height>231</height>
+     <height>251</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -422,7 +425,7 @@
       <x>0</x>
       <y>0</y>
       <width>641</width>
-      <height>231</height>
+      <height>251</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -448,18 +451,61 @@
      </size>
     </property>
    </widget>
+   <widget class="QLabel" name="lblImage">
+    <property name="geometry">
+     <rect>
+      <x>3</x>
+      <y>4</y>
+      <width>631</width>
+      <height>241</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <zorder>lblImage</zorder>
+   <zorder>btnAOI</zorder>
   </widget>
   <widget class="Line" name="line">
    <property name="geometry">
     <rect>
      <x>7</x>
-     <y>280</y>
+     <y>340</y>
      <width>681</width>
      <height>20</height>
     </rect>
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnRetry">
+   <property name="geometry">
+    <rect>
+     <x>580</x>
+     <y>310</y>
+     <width>93</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Retry</string>
    </property>
   </widget>
  </widget>
