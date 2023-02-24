@@ -1,4 +1,4 @@
-KEM_WEBCAM_SELECTOR_UI_PATH = 'webcam_selector.ui'
+KEM_WEBCAM_SELECTOR_UI_PATH = 'kem_webcam_selector.ui'
 
 #from msilib.schema import ComboBox
 import sys

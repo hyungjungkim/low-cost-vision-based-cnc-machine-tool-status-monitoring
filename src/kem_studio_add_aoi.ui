@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>708</width>
-    <height>804</height>
+    <width>422</width>
+    <height>584</height>
    </rect>
   </property>
   <property name="font">
@@ -27,8 +27,8 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>490</x>
-     <y>750</y>
+     <x>220</x>
+     <y>550</y>
      <width>191</width>
      <height>32</height>
     </rect>
@@ -36,7 +36,7 @@
    <property name="font">
     <font>
      <family>Calibri</family>
-     <pointsize>12</pointsize>
+     <pointsize>10</pointsize>
     </font>
    </property>
    <property name="orientation">
@@ -49,75 +49,23 @@
   <widget class="QWidget" name="gridLayoutWidget_2">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>370</y>
-     <width>641</width>
-     <height>361</height>
+     <x>10</x>
+     <y>270</y>
+     <width>401</width>
+     <height>271</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <widget class="QLabel" name="lblThreshold">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
+    <item row="0" column="1">
+     <widget class="QSlider" name="sldThreshold">
+      <property name="maximum">
+       <number>255</number>
       </property>
-      <property name="minimumSize">
-       <size>
-        <width>130</width>
-        <height>0</height>
-       </size>
+      <property name="value">
+       <number>128</number>
       </property>
-      <property name="font">
-       <font>
-        <pointsize>14</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Threshold</string>
-      </property>
-     </widget>
-    </item>
-    <item row="8" column="0">
-     <spacer name="verticalSpacer_2">
       <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>40</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="6" column="0">
-     <widget class="QLabel" name="lblSize">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>130</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>14</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Size (width,height)</string>
+       <enum>Qt::Horizontal</enum>
       </property>
      </widget>
     </item>
@@ -134,22 +82,8 @@
       </property>
      </spacer>
     </item>
-    <item row="11" column="0">
-     <widget class="QPushButton" name="btnOCRTest">
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>OCR Test</string>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="0">
-     <widget class="QLabel" name="lblLoc">
+    <item row="0" column="0">
+     <widget class="QLabel" name="lblThreshold">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
         <horstretch>0</horstretch>
@@ -164,133 +98,27 @@
       </property>
       <property name="font">
        <font>
-        <pointsize>14</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
+        <family>Calibri</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
-       <string>Location (x, y)</string>
+       <string>Threshold</string>
       </property>
      </widget>
-    </item>
-    <item row="4" column="0">
-     <widget class="QLabel" name="lblType">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>130</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>14</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Type</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="0">
-     <widget class="QLabel" name="lblName">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>130</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>14</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Name</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QSlider" name="sldThreshold">
-      <property name="maximum">
-       <number>255</number>
-      </property>
-      <property name="value">
-       <number>128</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="1">
-     <widget class="QLineEdit" name="txtName">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="1">
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QLineEdit" name="txtLocX">
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="txtLocY">
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
     </item>
     <item row="6" column="1">
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
        <widget class="QLineEdit" name="txtSizeW">
+        <property name="font">
+         <font>
+          <family>Calibri</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -311,6 +139,12 @@
       </item>
       <item>
        <widget class="QLineEdit" name="txtSizeH">
+        <property name="font">
+         <font>
+          <family>Calibri</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -318,29 +152,36 @@
       </item>
      </layout>
     </item>
-    <item row="1" column="1">
-     <widget class="QLineEdit" name="txtThreshold">
-      <property name="maximumSize">
-       <size>
-        <width>16777215</width>
-        <height>20</height>
-       </size>
+    <item row="3" column="1">
+     <widget class="QLineEdit" name="txtName">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
       <property name="font">
        <font>
+        <family>Calibri</family>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+     </widget>
+    </item>
+    <item row="11" column="0">
+     <widget class="QPushButton" name="btnOCRTest">
+      <property name="font">
+       <font>
+        <family>Calibri</family>
         <pointsize>10</pointsize>
         <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
       <property name="text">
-       <string>128</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
+       <string>OCR Test</string>
       </property>
      </widget>
     </item>
@@ -348,6 +189,7 @@
      <widget class="QComboBox" name="cbbType">
       <property name="font">
        <font>
+        <family>Calibri</family>
         <pointsize>10</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -375,6 +217,199 @@
       </item>
      </widget>
     </item>
+    <item row="5" column="1">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLineEdit" name="txtLocX">
+        <property name="font">
+         <font>
+          <family>Calibri</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="txtLocY">
+        <property name="font">
+         <font>
+          <family>Calibri</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="11" column="1">
+     <widget class="QLineEdit" name="txtOCRTestResult">
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="txtThreshold">
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>128</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="lblType">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>130</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Type</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0">
+     <widget class="QLabel" name="lblLoc">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>130</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Location (x, y)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="0">
+     <widget class="QLabel" name="lblSize">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>130</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Size (width,height)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="lblName">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>130</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Name</string>
+      </property>
+     </widget>
+    </item>
     <item row="2" column="0">
      <spacer name="verticalSpacer_4">
       <property name="orientation">
@@ -388,29 +423,28 @@
       </property>
      </spacer>
     </item>
-    <item row="11" column="1">
-     <widget class="QLineEdit" name="txtOCRTestResult">
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
+    <item row="8" column="0">
+     <spacer name="verticalSpacer_2">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
       </property>
-      <property name="readOnly">
-       <bool>true</bool>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
       </property>
-     </widget>
+     </spacer>
     </item>
    </layout>
   </widget>
   <widget class="QFrame" name="frameImage">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>40</y>
-     <width>641</width>
-     <height>251</height>
+     <x>10</x>
+     <y>10</y>
+     <width>400</width>
+     <height>200</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -424,8 +458,8 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>641</width>
-      <height>251</height>
+      <width>400</width>
+      <height>200</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -436,6 +470,7 @@
     </property>
     <property name="font">
      <font>
+      <family>Calibri</family>
       <pointsize>20</pointsize>
       <weight>75</weight>
       <bold>true</bold>
@@ -456,8 +491,8 @@
      <rect>
       <x>3</x>
       <y>4</y>
-      <width>631</width>
-      <height>241</height>
+      <width>400</width>
+      <height>200</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -479,9 +514,9 @@
   <widget class="Line" name="line">
    <property name="geometry">
     <rect>
-     <x>7</x>
-     <y>340</y>
-     <width>681</width>
+     <x>10</x>
+     <y>250</y>
+     <width>401</width>
      <height>20</height>
     </rect>
    </property>
@@ -492,14 +527,15 @@
   <widget class="QPushButton" name="btnRetry">
    <property name="geometry">
     <rect>
-     <x>580</x>
-     <y>310</y>
+     <x>320</x>
+     <y>220</y>
      <width>93</width>
      <height>28</height>
     </rect>
    </property>
    <property name="font">
     <font>
+     <family>Calibri</family>
      <weight>75</weight>
      <bold>true</bold>
     </font>
