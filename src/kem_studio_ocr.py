@@ -122,7 +122,7 @@ class AOIAdd(QDialog):
     camera_focus = 30
     rectangle = False
     thresholdvalue = 0
-    margin_width, margin_height = 100, 30
+    margin_width, margin_height =0 , 0
     finished = False
     sample_image = cv2.imread(SAMPLE_IMAGE)
     ocr_engine = ocr_engine.OCREngine(opt_TESSERACT_EXE)
@@ -143,6 +143,12 @@ class AOIAdd(QDialog):
     def showCaptureResult(self,img):
         h,w = img.shape
         qImg = QtGui.QImage(img.data, w, h, w, QtGui.QImage.Format_Grayscale8)
+        if h > 200 or w > 400:
+            max_rat = max(w/400,h/200)
+            w_rat = int(w/max_rat)
+            h_rat = int(h/max_rat)
+            resize_img = cv2.resize(img,(w_rat,h_rat))
+            qImg = QtGui.QImage(resize_img.data, w_rat, h_rat, w_rat, QtGui.QImage.Format_Grayscale8)
         pixmap = QtGui.QPixmap.fromImage(qImg)
         self.lblImage.setPixmap(pixmap)
         self.lblImage.show()
