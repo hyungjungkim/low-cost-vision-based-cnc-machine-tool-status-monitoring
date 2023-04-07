@@ -122,7 +122,7 @@ class AOIAdd(QDialog):
     camera_focus = 30
     rectangle = False
     thresholdvalue = 0
-    margin_width, margin_height =0 , 0
+    margin_width, margin_height = 0 , 0
     finished = False
     sample_image = cv2.imread(SAMPLE_IMAGE)
     ocr_engine = ocr_engine.OCREngine(opt_TESSERACT_EXE)
@@ -187,31 +187,35 @@ class AOIAdd(QDialog):
     
     def addAOI(self):
         self.btnAOI.hide()
-        sample_image = cv2.imread(SAMPLE_IMAGE)
-        vidCap = cv2.VideoCapture(opt_WEBCAM_INDEX,cv2.CAP_V4L)
-        message = 'Start capturing an image.'
-        print(message)
-
-        if not opt_WEBCAM_AUTOFOCUS:
-            vidCap.set(cv2.CAP_PROP_AUTOFOCUS, 0)
-            vidCap.set(cv2.CAP_PROP_FOCUS, self.camera_focus)
-
-        vidCap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
-        vidCap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
-
-        cv2.namedWindow('image')
-        cv2.setMouseCallback('image', self.onMouse)
-        vidCap.set(cv2.CAP_PROP_FOCUS, self.camera_focus)
-        success, self.image = vidCap.read()
-
         if opt_RUN_WITHOUT_WEBCAM_MODE:
+            sample_image = cv2.imread(SAMPLE_IMAGE)
+            message = 'Load smaple image'
+            print(message)
             self.image = self.sample_image
+        
+        else:
+            vidCap = cv2.VideoCapture(opt_WEBCAM_INDEX,cv2.CAP_V4L)
+            message = 'Start capturing an image.'
+            print(message)
 
-        if not success and not opt_RUN_WITHOUT_WEBCAM_MODE:
-            print('Fail to read an image.')
+            if not opt_WEBCAM_AUTOFOCUS:
+                vidCap.set(cv2.CAP_PROP_AUTOFOCUS, 0)
+                vidCap.set(cv2.CAP_PROP_FOCUS, self.camera_focus)
+
+            vidCap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+            vidCap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+            vidCap.set(cv2.CAP_PROP_FOCUS, self.camera_focus)
+            success, self.image = vidCap.read()            
+            if not success and not opt_RUN_WITHOUT_WEBCAM_MODE:
+                print('Fail to read an image.')
             return
         
+        cv2.namedWindow('image')
+        cv2.setMouseCallback('image', self.onMouse)
+
+        
         self.image_ = self.image.copy()
+
         while(1) : 
             cv2.imshow('image', self.image)
             cv2.waitKey(50)
@@ -219,7 +223,8 @@ class AOIAdd(QDialog):
                 break
         
         cv2.destroyAllWindows()
-        vidCap.release()
+        if not opt_RUN_WITHOUT_WEBCAM_MODE:
+            vidCap.release()
         message = 'Capturing an image is finished.'
         print(message)
         
@@ -394,6 +399,9 @@ class KEM_STUDIO_OCR(QMainWindow):
 
     def live_view(self):
         self.update_status('Test an image.')
+        if opt_RUN_WITHOUT_WEBCAM_MODE:
+            self.update_status('No Live View in Without Webcam Mode')
+            return
         
         camera = cv2.VideoCapture(opt_WEBCAM_INDEX,cv2.CAP_V4L)        
         ret, frame = camera.read()
@@ -507,19 +515,20 @@ class KEM_STUDIO_OCR(QMainWindow):
         self.actionStop.setEnabled(True)
         self.tbactionStop.setEnabled(True)
         print('Start watching. %s' % (time.ctime()))
+        if not opt_RUN_WITHOUT_WEBCAM_MODE:
+            cap_camera = cv2.VideoCapture(opt_WEBCAM_INDEX,cv2.CAP_V4L)
 
-        cap_camera = cv2.VideoCapture(opt_WEBCAM_INDEX,cv2.CAP_V4L)
+            if not opt_WEBCAM_AUTOFOCUS:
+                cap_camera.set(cv2.CAP_PROP_AUTOFOCUS, 0)
+                cap_camera.set(cv2.CAP_PROP_FOCUS, self.camera_focus)
 
-        if not opt_WEBCAM_AUTOFOCUS:
-            cap_camera.set(cv2.CAP_PROP_AUTOFOCUS, 0)
-            cap_camera.set(cv2.CAP_PROP_FOCUS, self.camera_focus)
-
-        cap_camera.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
-        cap_camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+            cap_camera.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+            cap_camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
         while self.watch:
-            success, image = cap_camera.read()
-            if opt_RUN_WITHOUT_WEBCAM_MODE:
+            if not opt_RUN_WITHOUT_WEBCAM_MODE:
+                success, image = cap_camera.read()
+            else:
                 image = self.sample_image
             
             # if opt_UPSIDE_DOWN_MODE:
@@ -581,8 +590,8 @@ class KEM_STUDIO_OCR(QMainWindow):
             self.status_bar.showMessage('OCR processing (sec.): %f' % ocr_elapsed)
 
             self.repaint()
-
-        cap_camera.release()
+        if not opt_RUN_WITHOUT_WEBCAM_MODE:
+            cap_camera.release()
         cv2.destroyAllWindows()
         self.update_status('OCR processing is finished. ')
         print('OCR processing is finished. %s' % (time.ctime()))
