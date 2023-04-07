@@ -58,13 +58,6 @@ class OptionDialog(QMainWindow):
     def __init__(self,parent=None):
         super(OptionDialog, self).__init__(parent)
         uic.loadUi(OPTION_DIALOG_PATH, self)
-        opt_TESSERACT_EXE = self.config.get('default','tes_exe_loc')
-        opt_TESSERACTOCR_DIR = self.config.get('default','tes_data_loc')
-        opt_RUN_WITHOUT_SCREEN_MODE = self.config.getboolean('default','run_wo_sc')
-        opt_RUN_WITHOUT_WEBCAM_MODE = self.config.getboolean('default','run_wo_wc')
-        opt_WEBCAM_INDEX = self.config.getint('default','wc_index')
-        opt_WEBCAM_AUTOFOCUS = self.config.getboolean('default','wc_focus')
-        opt_SAVE_AOI_IMAGE = self.config.getboolean('default', 'save_AOI_Img')
 
         self.tesseract_exe_loc_line.setText(opt_TESSERACT_EXE)
         self.tesseractocr_loc_line.setText(opt_TESSERACTOCR_DIR)
@@ -354,7 +347,12 @@ class KEM_STUDIO_OCR(QMainWindow):
     else:
         config.read('setting_lin.ini')
     opt_TESSERACT_EXE = config.get('default','tes_exe_loc')
-    opt_TESSERACTOCR_DIR= config.get('default','tes_data_loc')
+    opt_TESSERACTOCR_DIR = config.get('default','tes_data_loc')
+    opt_RUN_WITHOUT_SCREEN_MODE = config.getboolean('default','run_wo_sc')
+    opt_RUN_WITHOUT_WEBCAM_MODE = config.getboolean('default','run_wo_wc')
+    opt_WEBCAM_INDEX = config.getint('default','wc_index')
+    opt_WEBCAM_AUTOFOCUS = config.getboolean('default','wc_focus')
+    opt_SAVE_AOI_IMAGE = config.getboolean('default', 'save_AOI_Img')   
     ocr_engine = ocr_engine.OCREngine(opt_TESSERACT_EXE)
 
     watch = False
@@ -388,7 +386,9 @@ class KEM_STUDIO_OCR(QMainWindow):
 
         self.actionLive.triggered.connect(self.live_view)
 
-        self.update_status('Ready')        
+        self.update_status('Ready')
+
+    
 
     def update_status(self, message):
         self.status_bar.showMessage('%s - %s' % (message, time.ctime()))
