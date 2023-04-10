@@ -44,7 +44,7 @@ class WebcamSelector(QDialog):
         camera_list = []
 
         for index in range(0, MAX_CAMERA_INDEX):
-            camera = cv2.VideoCapture(index,cv2.CAP_V4L)
+            camera = cv2.VideoCapture(index)
             if camera.isOpened():
                 camera_list.append(index)
                 print('Found ' + str(index))
@@ -62,7 +62,7 @@ class WebcamSelector(QDialog):
 
     def test_webcam(self):
         if self.webcam_index != -1:
-            camera = cv2.VideoCapture(self.webcam_index,cv2.CAP_V4L)
+            camera = cv2.VideoCapture(self.webcam_index)
             ret, frame = camera.read()
             cv2.imshow('Test Image of the selected camera (index %d)' % self.webcam_index, frame)
             cv2.waitKey(3000)
