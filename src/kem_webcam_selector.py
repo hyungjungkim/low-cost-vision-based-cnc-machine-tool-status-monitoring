@@ -3,7 +3,7 @@ KEM_WEBCAM_SELECTOR_UI_PATH = 'kem_webcam_selector.ui'
 #from msilib.schema import ComboBox
 import sys
 from PyQt5.QtWidgets import QApplication, QDialog, QMessageBox
-from PyQt5 import uic, QtGui
+from PyQt5 import uic
 
 import cv2
 
@@ -38,7 +38,7 @@ class WebcamSelector(QDialog):
                 self.webcam_index = -1
             else:
                 self.webcam_index = int(self.cbb_camera_list.currentText().split('-')[-1])
-                # print('The selected camera index is ' + str(self.webcam_index))
+                print('The selected camera index is ' + str(self.webcam_index))
     
     def get_cameras(self):
         camera_list = []
