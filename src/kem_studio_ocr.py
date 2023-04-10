@@ -31,13 +31,19 @@ RUN_CONSOLE_ONLY_MODE = False
 
 # Option
 import configparser
-opt_TESSERACT_EXE = ''
-opt_TESSERACTOCR_DIR = ''
-opt_RUN_WITHOUT_WEBCAM_MODE = True
-opt_WEBCAM_INDEX = 0
-opt_RUN_WITHOUT_SCREEN_MODE = True
-opt_WEBCAM_AUTOFOCUS = False
-opt_SAVE_AOI_IMAGE = False
+
+config = configparser.ConfigParser()
+if(platform.system() == 'Windows'):
+    config.read('setting.ini')
+else:
+    config.read('setting_lin.ini')
+opt_TESSERACT_EXE = config.get('default','tes_exe_loc')
+opt_TESSERACTOCR_DIR = config.get('default','tes_data_loc')
+opt_RUN_WITHOUT_SCREEN_MODE = config.getboolean('default','run_wo_sc')
+opt_RUN_WITHOUT_WEBCAM_MODE = config.getboolean('default','run_wo_wc')
+opt_WEBCAM_INDEX = config.getint('default','wc_index')
+opt_WEBCAM_AUTOFOCUS = config.getboolean('default','wc_focus')
+opt_SAVE_AOI_IMAGE = config.getboolean('default', 'save_AOI_Img')   
 # opt_UPSIDE_DOWN_MODE = False
 
 
@@ -340,18 +346,6 @@ class KEM_STUDIO_OCR(QMainWindow):
     thresholdvalue = 0
     margin_width, margin_height = 100, 30
     aoi_list = []
-    config = configparser.ConfigParser()
-    if(platform.system() == 'Windows'):
-        config.read('setting.ini')
-    else:
-        config.read('setting_lin.ini')
-    opt_TESSERACT_EXE = config.get('default','tes_exe_loc')
-    opt_TESSERACTOCR_DIR = config.get('default','tes_data_loc')
-    opt_RUN_WITHOUT_SCREEN_MODE = config.getboolean('default','run_wo_sc')
-    opt_RUN_WITHOUT_WEBCAM_MODE = config.getboolean('default','run_wo_wc')
-    opt_WEBCAM_INDEX = config.getint('default','wc_index')
-    opt_WEBCAM_AUTOFOCUS = config.getboolean('default','wc_focus')
-    opt_SAVE_AOI_IMAGE = config.getboolean('default', 'save_AOI_Img')   
     ocr_engine = ocr_engine.OCREngine(opt_TESSERACT_EXE)
 
     watch = False
