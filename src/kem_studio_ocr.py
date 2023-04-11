@@ -215,15 +215,16 @@ class AOIAdd(QDialog):
                 print('Fail to read an image.')
                 return
         
-        cv2.namedWindow('image')
-        cv2.setMouseCallback('image', self.onMouse)
+        camera_viewer_title = 'Camera image'
+        cv2.namedWindow(camera_viewer_title)
+        cv2.setMouseCallback(camera_viewer_title, self.onMouse)
         
         self.image_ = self.image.copy()
 
         while(1) : 
-            cv2.imshow('image', self.image)
+            cv2.imshow(camera_viewer_title, self.image)
             cv2.waitKey(50)
-            if cv2.getWindowProperty('image', cv2.WND_PROP_VISIBLE) < 1:
+            if cv2.getWindowProperty(camera_viewer_title, cv2.WND_PROP_VISIBLE) < 1:
                 break
         
         cv2.destroyAllWindows()
