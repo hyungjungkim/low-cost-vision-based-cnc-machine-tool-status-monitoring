@@ -69,8 +69,13 @@ class OptionDialog(QMainWindow):
         self.tesseractocr_loc_line.setText(opt_TESSERACTOCR_DIR)
         self.run_without_webcam_check.setChecked(opt_RUN_WITHOUT_WEBCAM_MODE)
         
+        self.rb_webcam_index.setEnabled(not opt_RUN_WITHOUT_WEBCAM_MODE)
         self.webcam_index_box.setValue(opt_WEBCAM_INDEX)
         self.webcam_index_box.setEnabled(not opt_RUN_WITHOUT_WEBCAM_MODE)
+        self.btn_camera_index.setEnabled(not opt_RUN_WITHOUT_WEBCAM_MODE)
+        self.rb_ip_stream.setEnabled(not opt_RUN_WITHOUT_WEBCAM_MODE)
+        self.camera_url.setText('http://...')
+        self.camera_url.setEnabled(not opt_RUN_WITHOUT_WEBCAM_MODE)
 
         # self.run_upside_down_check.setChecked(opt_UPSIDE_DOWN_MODE)
         self.run_without_screen_check.setChecked(opt_RUN_WITHOUT_SCREEN_MODE)
@@ -112,7 +117,11 @@ class OptionDialog(QMainWindow):
         
     
     def toggled(self):
+        self.rb_webcam_index.setEnabled(not self.rb_webcam_index.isEnabled())        
         self.webcam_index_box.setEnabled(not self.webcam_index_box.isEnabled())
+        self.btn_camera_index.setEnabled(not self.btn_camera_index.isEnabled())
+        self.rb_ip_stream.setEnabled(not self.rb_ip_stream.isEnabled())
+        self.camera_url.setEnabled(not self.camera_url.isEnabled())
 
     def search_camera_index(self):
         webcam_selector = WebcamSelector()

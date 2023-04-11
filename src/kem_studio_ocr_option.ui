@@ -77,7 +77,7 @@
      </font>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tab_gen">
      <attribute name="title">
@@ -268,13 +268,13 @@
      </widget>
      <widget class="QSpinBox" name="webcam_index_box">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>280</x>
-        <y>90</y>
-        <width>43</width>
+        <x>220</x>
+        <y>70</y>
+        <width>61</width>
         <height>22</height>
        </rect>
       </property>
@@ -285,6 +285,9 @@
         <weight>75</weight>
         <bold>true</bold>
        </font>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
      <widget class="QCheckBox" name="run_without_webcam_check">
@@ -320,33 +323,15 @@
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QLabel" name="webcam_index_lit">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>90</y>
-        <width>151</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Calibri</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>   Webcam Index</string>
-      </property>
-     </widget>
      <widget class="QPushButton" name="btn_camera_index">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="geometry">
        <rect>
-        <x>340</x>
-        <y>90</y>
-        <width>141</width>
+        <x>320</x>
+        <y>70</y>
+        <width>151</width>
         <height>23</height>
        </rect>
       </property>
@@ -362,7 +347,61 @@
        <enum>Qt::RightToLeft</enum>
       </property>
       <property name="text">
-       <string>Set camera index</string>
+       <string>Test camera index</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="rb_webcam_index">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>70</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Webcam index (USB)</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="rb_ip_stream">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>110</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>IP address (URL)</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="camera_url">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>110</y>
+        <width>291</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>http://</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </widget>
