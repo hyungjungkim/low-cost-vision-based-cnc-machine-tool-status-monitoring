@@ -205,8 +205,8 @@ class AOIAdd(QDialog):
             self.txtLocY.setText(str(self.y))
             self.txtSizeW.setText(str(self.width))
             self.txtSizeH.setText(str(self.height))
-            cv2.destroyWindow(self.camera_viewer_title)
-
+            if(platform.system() == 'Windows'):
+                cv2.destroyWindow(self.camera_viewer_title)
     
     def addAOI(self):
         self.btnAOI.hide()
@@ -249,7 +249,6 @@ class AOIAdd(QDialog):
             cv2.waitKey(50)
             if cv2.getWindowProperty(self.camera_viewer_title, cv2.WND_PROP_VISIBLE) < 1:
                 break
-        
         cv2.destroyAllWindows()
         if not opt_RUN_WITHOUT_WEBCAM_MODE:
             cap_camera.release()
