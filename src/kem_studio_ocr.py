@@ -43,7 +43,9 @@ opt_RUN_WITHOUT_SCREEN_MODE = config.getboolean('default','run_wo_sc')
 opt_RUN_WITHOUT_WEBCAM_MODE = config.getboolean('default','run_wo_wc')
 opt_WEBCAM_INDEX = config.getint('default','wc_index')
 opt_WEBCAM_AUTOFOCUS = config.getboolean('default','wc_focus')
-opt_SAVE_AOI_IMAGE = config.getboolean('default', 'save_AOI_Img')   
+opt_SAVE_AOI_IMAGE = config.getboolean('default', 'save_AOI_Img')
+opt_CAM_URL = config.get('default','cam_url')
+opt_USE_URL = config.getboolean('default','use_url')
 # opt_UPSIDE_DOWN_MODE = False
 
 
@@ -70,11 +72,13 @@ class OptionDialog(QMainWindow):
         self.run_without_webcam_check.setChecked(opt_RUN_WITHOUT_WEBCAM_MODE)
         
         self.rb_webcam_index.setEnabled(not opt_RUN_WITHOUT_WEBCAM_MODE)
+        self.rb_webcam_index.setChecked(not opt_USE_URL)
         self.webcam_index_box.setValue(opt_WEBCAM_INDEX)
         self.webcam_index_box.setEnabled(not opt_RUN_WITHOUT_WEBCAM_MODE)
         self.btn_camera_index.setEnabled(not opt_RUN_WITHOUT_WEBCAM_MODE)
         self.rb_ip_stream.setEnabled(not opt_RUN_WITHOUT_WEBCAM_MODE)
-        self.camera_url.setText('http://...')
+        self.rb_ip_stream.setChecked(opt_USE_URL)
+        self.camera_url.setText(opt_CAM_URL)
         self.camera_url.setEnabled(not opt_RUN_WITHOUT_WEBCAM_MODE)
 
         # self.run_upside_down_check.setChecked(opt_UPSIDE_DOWN_MODE)
@@ -98,6 +102,8 @@ class OptionDialog(QMainWindow):
         opt_TESSERACT_EXE = self.tesseract_exe_loc_line.text()
         opt_TESSERACTOCR_DIR =  self.tesseractocr_loc_line.text()
         opt_WEBCAM_INDEX = self.webcam_index_box.value()
+        opt_CAM_URL = self.camera_url.text()
+        opt_USE_URL = self.rb_ip_stream.isChecked()
 
         self.config.set('default','tes_exe_loc',opt_TESSERACT_EXE)
         self.config.set('default','tes_data_loc',opt_TESSERACTOCR_DIR)
@@ -106,6 +112,9 @@ class OptionDialog(QMainWindow):
         self.config.set('default','wc_index',str(opt_WEBCAM_INDEX))
         self.config.set('default','wxc_focus',str(opt_WEBCAM_AUTOFOCUS))
         self.config.set('default', 'save_AOI_Img', str(opt_SAVE_AOI_IMAGE))
+        self.config.set('default','cam_url',opt_CAM_URL)
+        self.config.set('default','use_url',str(opt_USE_URL))
+
         if(platform.system() == 'Windows'):
             with open('setting.ini','w') as configfile:
                 self.config.write(configfile)
@@ -139,6 +148,7 @@ class AOIAdd(QDialog):
     finished = False
     sample_image = cv2.imread(SAMPLE_IMAGE)
     ocr_engine = ocr_engine.OCREngine(opt_TESSERACT_EXE)
+    camera_viewer_title = 'Camera image'
 
     def __init__(self,parent= None):
         super().__init__()
@@ -174,7 +184,7 @@ class AOIAdd(QDialog):
             if self.rectangle:
                 self.image = self.image_.copy()
                 cv2.rectangle(self.image, (self.col, self.row), (x, y), (0, 255, 0), 2)
-                cv2.imshow('image', self.image)
+                cv2.imshow(self.camera_viewer_title, self.image)
         elif event == cv2.EVENT_LBUTTONUP:
             self.capture = False
             self.rectangle = False
@@ -195,7 +205,7 @@ class AOIAdd(QDialog):
             self.txtLocY.setText(str(self.y))
             self.txtSizeW.setText(str(self.width))
             self.txtSizeH.setText(str(self.height))
-            cv2.destroyWindow('image')
+            cv2.destroyWindow(self.camera_viewer_title)
 
     
     def addAOI(self):
@@ -207,8 +217,13 @@ class AOIAdd(QDialog):
             self.image = self.sample_image
         
         else:
-            cap_camera = cv2.VideoCapture(opt_WEBCAM_INDEX)
-            message = 'Start capturing an image from %d.' % opt_WEBCAM_INDEX
+            if opt_USE_URL:
+                cap_camera = cv2.VideoCapture(opt_CAM_URL)
+                message = 'Start capturing an image from %s.' % opt_CAM_URL
+
+            else :
+                cap_camera = cv2.VideoCapture(opt_WEBCAM_INDEX)
+                message = 'Start capturing an image from %d.' % opt_WEBCAM_INDEX
             print(message)
 
             if not opt_WEBCAM_AUTOFOCUS:
@@ -224,16 +239,15 @@ class AOIAdd(QDialog):
                 print('Fail to read an image.')
                 return
         
-        camera_viewer_title = 'Camera image'
-        cv2.namedWindow(camera_viewer_title)
-        cv2.setMouseCallback(camera_viewer_title, self.onMouse)
+        cv2.namedWindow(self.camera_viewer_title)
+        cv2.setMouseCallback(self.camera_viewer_title, self.onMouse)
         
         self.image_ = self.image.copy()
 
         while(1) : 
-            cv2.imshow(camera_viewer_title, self.image)
+            cv2.imshow(self.camera_viewer_title, self.image)
             cv2.waitKey(50)
-            if cv2.getWindowProperty(camera_viewer_title, cv2.WND_PROP_VISIBLE) < 1:
+            if cv2.getWindowProperty(self.camera_viewer_title, cv2.WND_PROP_VISIBLE) < 1:
                 break
         
         cv2.destroyAllWindows()
@@ -525,7 +539,10 @@ class KEM_STUDIO_OCR(QMainWindow):
         self.tbactionStop.setEnabled(True)
         print('Start watching. %s' % (time.ctime()))
         if not opt_RUN_WITHOUT_WEBCAM_MODE:
-            cap_camera = cv2.VideoCapture(opt_WEBCAM_INDEX)
+            if opt_USE_URL:
+                cap_camera = cv2.VideoCapture(opt_CAM_URL)
+            else :
+                cap_camera = cv2.VideoCapture(opt_WEBCAM_INDEX)
 
             if not opt_WEBCAM_AUTOFOCUS:
                 cap_camera.set(cv2.CAP_PROP_AUTOFOCUS, 0)
