@@ -92,7 +92,7 @@ class OptionDialog(QMainWindow):
         self.btn_camera_index.clicked.connect(self.search_camera_index)
     
     def save(self):
-        global opt_TESSERACT_EXE,opt_TESSERACTOCR_DIR, opt_RUN_WITHOUT_WEBCAM_MODE, opt_WEBCAM_INDEX, opt_SAVE_AOI_IMAGE,opt_RUN_WITHOUT_SCREEN_MODE,opt_WEBCAM_AUTOFOCUS #,opt_UPSIDE_DOWN_MODE
+        global opt_RUN_WITHOUT_SCREEN_MODE, opt_WEBCAM_AUTOFOCUS, opt_SAVE_AOI_IMAGE, opt_RUN_WITHOUT_WEBCAM_MODE, opt_TESSERACT_EXE,opt_TESSERACTOCR_DIR, opt_WEBCAM_INDEX, opt_CAM_URL, opt_USE_URL #,opt_UPSIDE_DOWN_MODE
         # opt_UPSIDE_DOWN_MODE = self.run_upside_down_check.isChecked()
         opt_RUN_WITHOUT_SCREEN_MODE = self.run_without_screen_check.isChecked()
         opt_WEBCAM_AUTOFOCUS = self.focus_auto_check.isChecked()
