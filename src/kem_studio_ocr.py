@@ -26,7 +26,7 @@ import time
 from datetime import date
 import random # For saving aoi image for test purpose
 WEBSITE_URL = 'https://github.com/hyungjungkim/vision-based-status-monitoring-for-legacy-HMI'
-SAMPLE_IMAGE = 'sample_image/hmi_screen_ex-1.jpg'
+SAMPLE_IMAGE = 'sample_image/OCRCNC.png'
 RUN_CONSOLE_ONLY_MODE = False
 
 # Option
@@ -620,9 +620,10 @@ class KEM_STUDIO_OCR(QMainWindow):
             self.status_bar.showMessage('OCR processing (sec.): %f' % ocr_elapsed)
 
             self.repaint()
-
-            if opt_CAM_URL:
-                cap_camera.release()
+            
+            if not opt_RUN_WITHOUT_WEBCAM_MODE:
+                if opt_CAM_URL:
+                    cap_camera.release()
 
         if not opt_RUN_WITHOUT_WEBCAM_MODE:
             if not opt_CAM_URL:
