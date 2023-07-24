@@ -538,9 +538,9 @@ class KEM_STUDIO_OCR(QMainWindow):
         self.tbactionStop.setEnabled(True)
         print('Start watching. %s' % (time.ctime()))
         if not opt_RUN_WITHOUT_WEBCAM_MODE:
-            if opt_CAM_URL :
+            if opt_USE_URL :
                 cap_camera = cv2.VideoCapture(0)
-            if not opt_CAM_URL :
+            if not opt_USE_URL :
                 cap_camera = cv2.VideoCapture(opt_WEBCAM_INDEX)
 
             if not opt_WEBCAM_AUTOFOCUS:
@@ -552,7 +552,7 @@ class KEM_STUDIO_OCR(QMainWindow):
 
         while self.watch:
             if not opt_RUN_WITHOUT_WEBCAM_MODE:
-                if opt_CAM_URL:
+                if opt_USE_URL:
                     cap_camera = cv2.VideoCapture(opt_CAM_URL)
                     cap_camera.set(cv2.CAP_PROP_BUFFERSIZE,1)
                 
@@ -622,11 +622,11 @@ class KEM_STUDIO_OCR(QMainWindow):
             self.repaint()
             
             if not opt_RUN_WITHOUT_WEBCAM_MODE:
-                if opt_CAM_URL:
+                if opt_USE_URL:
                     cap_camera.release()
 
         if not opt_RUN_WITHOUT_WEBCAM_MODE:
-            if not opt_CAM_URL:
+            if not opt_USE_URL:
                 cap_camera.release()
         cv2.destroyAllWindows()
         self.update_status('OCR processing is finished. ')
