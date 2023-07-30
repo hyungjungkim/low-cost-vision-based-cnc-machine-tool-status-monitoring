@@ -26,7 +26,7 @@ import time
 from datetime import date
 import random # For saving aoi image for test purpose
 WEBSITE_URL = 'https://github.com/hyungjungkim/vision-based-status-monitoring-for-legacy-HMI'
-SAMPLE_IMAGE = 'sample_image/OCRCNC.png'
+SAMPLE_IMAGE = 'sample_image/OCRCNC2.png'
 RUN_CONSOLE_ONLY_MODE = False
 
 # Option
