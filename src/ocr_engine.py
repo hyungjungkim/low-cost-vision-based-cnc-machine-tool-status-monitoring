@@ -21,6 +21,9 @@ class OCREngine():
         ocr_res = ocr_res.replace('I', '1')
         ocr_res = ocr_res.replace('G', '1')
         ocr_res = ocr_res.replace('B', '8')
+        ocr_res = ocr_res.replace(',', '.')
+        ocr_res = ocr_res.replace('*', '.')
+        ocr_res = ocr_res.replace('/', '.')
 
         return ocr_res
 
