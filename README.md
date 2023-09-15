@@ -8,7 +8,7 @@
 
 * 보다 상세한 정보는 [여기](https://hyungjungkim.notion.site/HMI-7b6145baf5ea4a6ab0a8daf56aadb39d)로 방문해주세요! 
 
-* 제안된 도구의 품질과 사용성 향상을 위해 관심 있는 분들의 피드백, 제안, 참여를 환영합니다! Contact: hjkim81@snu.ac.kr
+* 제안된 도구의 품질과 사용성 향상을 위해 관심 있는 분들의 피드백, 제안, 참여를 환영합니다! Contact: hyungjungkim@konkuk.ac.kr
 
 * 이 성과는 정부(과학기술정보통신부)의 재원으로 한국연구재단의 지원(NRF-2021R1C1C2008026)과 과학기술정보통신부 및 정보통신기획평가원의 지역지능화혁신인재양성사업의 지원(IITP-2023-2020-0-01741)을 받아 수행된 연구임.
 
@@ -24,6 +24,6 @@ This repository contains an appropriate status monitoring tool, KEM (Keep an Eye
 
 * For mode information, pleae visit [here](https://hyungjungkim.notion.site/hyungjungkim/Vision-based-Status-Monitoring-for-Legacy-HMI-b3c092ed1e6144a7b158db1f119551ce)!  
 
-* Your feedbacks, suggestions, and participations are welcome to improve the quality and applicability of our tool! Contact: hjkim81@snu.ac.kr
+* Your feedbacks, suggestions, and participations are welcome to improve the quality and applicability of our tool! Contact: hyungjungkim@konkuk.ac.kr
 
 * This work was supported by the National Research Foundation of Korea (NRF) grants funded by Korea government (MSIT) (NRF-2021R1C1C2008026) and by the MSIT(Ministry of Science and ICT), Korea, under the Innovative Human Resource Development for Local Intellectualization support program(IITP-2023-2020-0-01741) supervised by the IITP(Institute for Information & communications Technology Planning & Evaluation).
